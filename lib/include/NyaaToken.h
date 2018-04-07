@@ -87,4 +87,4 @@ const Token ERROR(TokenType::ERROR, Token::NO_STRING_REP, OpType::NONE);
 } // namespace Nyaa
 
 
-#endif // fndef NYAA_TOKEN_H
+#endif // ifndef NYAA_TOKEN_H
