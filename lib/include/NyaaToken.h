@@ -30,33 +30,33 @@ namespace Nyaa {
 
 
 enum class TokenType {
-  STRING_CONSTANT, FLOAT_CONSTANT, BOOLEAN_CONSTANT, IDENTIFIER, OPEN_BRACE, CLOSE_BRACE,
-  OPEN_PAREN, CLOSE_PAREN, COLON, CARET, PLUS, MINUS, DIV, MUL, EQUAL, NOT_EQUAL, GREATER_THAN,
-  LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL, DOLLAR, COMMA, AMPERSAND, EOS, ERROR
+    STRING_CONSTANT, FLOAT_CONSTANT, BOOLEAN_CONSTANT, IDENTIFIER, OPEN_BRACE, CLOSE_BRACE,
+    OPEN_PAREN, CLOSE_PAREN, COLON, CARET, PLUS, MINUS, DIV, MUL, EQUAL, NOT_EQUAL, GREATER_THAN,
+    LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL, DOLLAR, COMMA, AMPERSAND, EOS, ERROR
 };
 
 
 enum class OpType { NONE, COMP_OP, ARITH_OP, STRING_OP };
 
- 
-class Token {
- public:
-  static const std::string NO_STRING_REP;
- private:
-  TokenType token_type_;
-  std::string string_rep_; // The sting representation.
-  OpType op_type_;
- public:
-  inline Token(const TokenType token_type, const std::string &string_rep, const OpType op_type)
-    : token_type_(token_type), string_rep_(string_rep), op_type_(op_type) { }
 
-  inline TokenType getType() const { return token_type_; }
-  inline bool IsCompOp() const { return op_type_ == OpType::COMP_OP; }
-  inline bool IsArithOp() const { return op_type_ == OpType::ARITH_OP; }
-  inline bool IsStringOp() const { return op_type_ == OpType::STRING_OP; }
+class Token {
+public:
+    static const std::string NO_STRING_REP;
+private:
+    TokenType token_type_;
+    std::string string_rep_; // The sting representation.
+    OpType op_type_;
+public:
+    inline Token(const TokenType token_type, const std::string &string_rep, const OpType op_type)
+        : token_type_(token_type), string_rep_(string_rep), op_type_(op_type) { }
+
+    inline TokenType getType() const { return token_type_; }
+    inline bool IsCompOp() const { return op_type_ == OpType::COMP_OP; }
+    inline bool IsArithOp() const { return op_type_ == OpType::ARITH_OP; }
+    inline bool IsStringOp() const { return op_type_ == OpType::STRING_OP; }
 };
 
- 
+
 const Token STRING_CONSTANT(TokenType::STRING_CONSTANT, Token::NO_STRING_REP, OpType::NONE);
 const Token FLOAT_CONSTANT(TokenType::FLOAT_CONSTANT, Token::NO_STRING_REP, OpType::NONE);
 const Token BOOLEAN_CONSTANT(TokenType::BOOLEAN_CONSTANT, Token::NO_STRING_REP, OpType::NONE);
