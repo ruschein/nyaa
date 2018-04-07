@@ -41,4 +41,6 @@ libnyaa.a: $(OBJS) Makefile
 	$(MAKE_DEPS) -I $(INC) $(SRCS)
 
 clean:
-	rm -f *~ $(PROGS) $(OBJS) *.a && make clean
+	rm -f *~ $(OBJS) *.a
+	$(MAKE) -C mkdep clean
+
