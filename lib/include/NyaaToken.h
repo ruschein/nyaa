@@ -32,7 +32,7 @@ namespace Nyaa {
 enum class TokenType {
     STRING_CONSTANT, FLOAT_CONSTANT, BOOLEAN_CONSTANT, IDENTIFIER, OPEN_BRACE, CLOSE_BRACE,
     OPEN_PAREN, CLOSE_PAREN, COLON, CARET, PLUS, MINUS, DIV, MUL, EQUAL, NOT_EQUAL, GREATER_THAN,
-    LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL, DOLLAR, COMMA, AMPERSAND, EOS, ERROR
+    LESS_THAN, GREATER_OR_EQUAL, LESS_OR_EQUAL, DOLLAR, COMMA, AMPERSAND, EOS, ERROR, NULL_TOKEN
 };
 
 
@@ -49,11 +49,15 @@ private:
 public:
     inline Token(const TokenType token_type, const std::string &string_rep, const OpType op_type)
         : token_type_(token_type), string_rep_(string_rep), op_type_(op_type) { }
+    Token(const Token &other) = default;
 
+    inline bool operator=(const Token &rhs) { return token_type_ == rhs.token_type_; }
+    inline bool operator!=(const Token &rhs) { return token_type_ != rhs.token_type_; }
     inline TokenType getType() const { return token_type_; }
     inline bool IsCompOp() const { return op_type_ == OpType::COMP_OP; }
     inline bool IsArithOp() const { return op_type_ == OpType::ARITH_OP; }
     inline bool IsStringOp() const { return op_type_ == OpType::STRING_OP; }
+    Token &swap(Token &other);
 };
 
 
@@ -82,6 +86,7 @@ const Token COMMA(TokenType::COMMA, ",", OpType::NONE);
 const Token AMPERSAND(TokenType::AMPERSAND, "&", OpType::NONE);
 const Token EOS(TokenType::EOS, Token::NO_STRING_REP, OpType::NONE);
 const Token ERROR(TokenType::ERROR, Token::NO_STRING_REP, OpType::NONE);
+const Token NULL_TOKEN(TokenType::NULL_TOKEN, Token::NO_STRING_REP, OpType::NONE);
 
 
 } // namespace Nyaa

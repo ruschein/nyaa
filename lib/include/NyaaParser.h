@@ -1,5 +1,5 @@
-/** \file    NyaaToken.cc
- *  \brief   Implementation of the Token class for the Nyaa interpreter.
+/** \file    NyaaParser.h
+ *  \brief   Interface of the parser for the Nyaa interpreter.
  *  \author  Dr. Johannes Ruscheinski
  */
 
@@ -19,23 +19,21 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "NyaaToken.h"
-#include <algorithm>
+#ifndef NYAA_PARSER_H
+#define NYAA_PARSER_H
 
 
 namespace Nyaa {
 
-
-const std::string Token::NO_STRING_REP("?");
-
-
-Token &Token::swap(Token &other) {
-    std::swap(token_type_, other.token_type_);
-    std::swap(string_rep_, other.string_rep_);
-    std::swap(op_type_, other.op_type_);
-
-    return *this;
-}
+  
+class Parser {
+ public:
+  NyaaParser();
+ private:
+};
 
 
 } // namespace Nyaa
+
+
+#endif // fndef NYAA_PARSER_H
