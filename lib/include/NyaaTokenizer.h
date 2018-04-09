@@ -49,7 +49,7 @@ class Tokenizer {
 public:
     explicit Tokenizer(const std::string &source)
         : source_(source), previous_token_(NULL_TOKEN), current_pos_(-1),
-      identifier_in_braces_(false), ch_(source_.cbegin()) { }
+          identifier_in_braces_(false), ch_(source_.cbegin()) { }
 
     /** Calls this until it returns EOS. */
     Token getToken();
