@@ -219,23 +219,18 @@ convert:
   
 Token Tokenizer::parseIdentifier() {
     std::string identifier;
-    bool escaped(false);
     while (ch_ != source_.cend() and
            ((*ch_ != '}' and *ch_ != ':' and *ch_ != ',' and *ch_ != '(' and *ch_ != ')') or escaped))
     {
-        if (escaped) {
-            escaped = false;
-            identifier += *ch_;
-        } else if (*ch_ == '\\')
-            escaped = true;
-        else
-            identifier += *ch_;
-
-	++ch_;
-    }
-    if (escaped) {
-        error_msg_ = "invalid column name at end of formula.";
-        return ERROR;
+        if (*ch_ == '\\') {
+            ++ch_;
+            if (ch_ == source_.cend()) {
+                error_msg_ = "invalid column name at end of formula.";
+                return ERROR;
+            }
+	}
+	    
+        identifier += *ch_++;
     }
     --ch_;
 
