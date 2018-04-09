@@ -29,7 +29,7 @@ namespace Nyaa {
 
 
 Token Tokenizer::getToken() {
-    // Do we have a chached token?
+    // Do we have a cached token?
     if (previous_token_ != NULL_TOKEN) {
         Token retval(NULL_TOKEN);
         retval.swap(previous_token_);
