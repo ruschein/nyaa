@@ -54,9 +54,10 @@ public:
     inline bool operator=(const Token &rhs) { return token_type_ == rhs.token_type_; }
     inline bool operator!=(const Token &rhs) { return token_type_ != rhs.token_type_; }
     inline TokenType getType() const { return token_type_; }
-    inline bool IsCompOp() const { return op_type_ == OpType::COMP_OP; }
-    inline bool IsArithOp() const { return op_type_ == OpType::ARITH_OP; }
-    inline bool IsStringOp() const { return op_type_ == OpType::STRING_OP; }
+    inline bool isCompOp() const { return op_type_ == OpType::COMP_OP; }
+    inline bool isArithOp() const { return op_type_ == OpType::ARITH_OP; }
+    inline bool isStringOp() const { return op_type_ == OpType::STRING_OP; }
+    inline std::string getStringRep() const { return string_rep_; }
     Token &swap(Token &other);
 };
 

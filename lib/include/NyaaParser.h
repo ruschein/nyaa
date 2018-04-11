@@ -27,9 +27,9 @@ namespace Nyaa {
 
   
 class Parser {
- public:
-  NyaaParser();
- private:
+public:
+    Parser();
+private:
 };
 
 
