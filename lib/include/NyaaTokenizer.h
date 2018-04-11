@@ -51,7 +51,7 @@ public:
         : source_(source), previous_token_(NULL_TOKEN), current_pos_(-1),
           identifier_in_braces_(false), ch_(source_.cbegin()) { }
 
-    /** Calls this until it returns EOS. */
+    /** Call this until it returns EOS. */
     Token getToken();
 
     /** You may only call this optionally once after a prior call to getToken(). */
