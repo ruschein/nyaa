@@ -23,6 +23,7 @@
 #define NYAA_FUNCTION_H
 
 
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -30,6 +31,10 @@
 
 
 namespace Nyaa {
+
+
+// Forward declaration:
+class AbstractNode;
 
 
 enum class NodeType { BOOLEAN_NODE, INT_NODE, FLOAT_NODE, STRING_NODE, NULL_NODE };
@@ -42,40 +47,40 @@ class FuncArg {
     int64_t int_value_;
     std::string string_value_;
 public:
-    FuncArg(const bool bool_value): type_(BOOLEAN_NODE), bool_value_(bool_value) { }
-    FuncArg(const double double_value): type_(FLOAT_NODE), double_value_(double_value) { }
-    FuncArg(const int64_t int_value): type_(INT_NODE), int_value_(int_value) { }
-    FuncArg(const std::string &string_value): type_(STRING_NODE), string_value_(string_value) { }
+    FuncArg(const bool bool_value): type_(NodeType::BOOLEAN_NODE), bool_value_(bool_value) { }
+    FuncArg(const double double_value): type_(NodeType::FLOAT_NODE), double_value_(double_value) { }
+    FuncArg(const int64_t int_value): type_(NodeType::INT_NODE), int_value_(int_value) { }
+    FuncArg(const std::string &string_value): type_(NodeType::STRING_NODE), string_value_(string_value) { }
 
-    inline NodeType getType() const { return type_ }
+    inline NodeType getType() const { return type_; }
 
     inline bool getBoolValue() const {
-        if (type_ != BOOLEAN_NODE)
+        if (type_ != NodeType::BOOLEAN_NODE)
             throw std::logic_error("in FuncArg::getBoolValue: not a boolean argument!");
 	return bool_value_;
     }
 
     inline double getDoubleValue() const {
-        if (type_ != FLOAT_NODE)
+        if (type_ != NodeType::FLOAT_NODE)
             throw std::logic_error("in FuncArg::getDoubleValue: not a floating point argument!");
 	return double_value_;
     }
 
     inline int64_t getIntValue() const {
-        if (type_ != INT_NODE)
+        if (type_ != NodeType::INT_NODE)
             throw std::logic_error("in FuncArg::getIntValue: not an integer argument!");
 	return int_value_;
     }
 
     inline const std::string &getStringValue() const {
-        if (type_ != STRING_NODE)
+        if (type_ != NodeType::STRING_NODE)
             throw std::logic_error("in FuncArg::getStringValue: not a string argument!");
 	return string_value_;
     }
 };
 
- 
-/** 
+
+/**
  * The function interface.
  */
 class Function {
@@ -84,7 +89,7 @@ public:
      *  Used to parse the function string.  This name is treated in a case-insensitive manner!
      *  \return the name by which you must call the function when used in an attribute equation.
      */
-    virtual const std::String &getName() = 0;
+    virtual const std::string &getName() const = 0;
 
     /**
      *  Used to provide help for users.  Unlike getUsageDescription(), this is an informal English description,
@@ -92,7 +97,7 @@ public:
      *
      *  \return a description of what this function does
      */
-    virtual const std::string getFunctionSummary() = 0;
+    virtual const std::string getFunctionSummary() const = 0;
 
     /**
      *  Used to provide help for users.  Unlike getFunctionSummary(), this describes how to call this function,
@@ -100,7 +105,7 @@ public:
      *
      *  \return a description of how to use this function
      */
-    virtual const std::string getUsageDescription() = 0;
+    virtual const std::string getUsageDescription() const = 0;
 
     /**
      *  \return the static return type of this function, NULL_NODE, FLOAT_NODE, INT_NODE, STRING_NODE, or BOOLEAN_NODE.
@@ -109,7 +114,7 @@ public:
      *
      *  Note, this is used by external tools used to filter a list of functions based on what a valid return type might be.
      */
-    virtual NodeType getReturnType() = 0;
+    virtual NodeType getReturnType() const = 0;
 
     /**
      *  \return the return type for this function (FLOAT_NODE, INT_NODE, STRING_NODE, or BOOLEAN_NODE)
@@ -118,17 +123,16 @@ public:
      *  Note that this is different from getReturnType() in that it will never return the wildcard Object.class.
      *  It is used by the parser which knows the actual type of the arguments in any given call to this function.
      */
-    virtual NodeType validateArgTypes(const std::vector<NodeType> &arg_types) = 0;
+    virtual NodeType validateArgTypes(const std::vector<NodeType> &arg_types) const = 0;
 
     /**
      *  Used to invoke this function.
      *  \param args the function arguments which must correspond in type and number to what getParameterTypes() returns.
      *  \return the result of the function evaluation.  The actual type of the returned object will be what getReturnType() returns.
-     *  \throws FunctionError 
-     *  \throws ArithmeticException thrown if a numeric error, e.g. a division by zero occurred.
-     *  \throws IllegalArgumentException thrown for any error that is not a numeric error, for example if a function only accepts positive numbers and a negative number was passed in.
+     *  \throws std::domain_error thrown if a numeric error, e.g. a division by zero occurred.
+     *  \throws std::invalid_argument thrown for any error that is not a numeric error, for example if a function only accepts positive numbers and a negative number was passed in.
      */
-    Object evaluateFunction(const Object[] args) throws FunctionError = 0;
+    virtual std::unique_ptr<AbstractNode> evaluateFunction(const std::vector<AbstractNode *> &args) const = 0;
 };
 
 
